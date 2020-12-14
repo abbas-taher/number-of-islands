@@ -41,7 +41,7 @@ Constraints:
     # for a given (i,j) check that preceeding item belongs to an island; if so add it to that island
     def isBefore(self, i,j):      
         for island in self.islandLst:
-            if j != 0 and (i,j-1) in island:
+            if j != 0 and (i,j-1) in island:   # assuming grid is surrounded by water, then for j == 0 (1st entry in line) there are no before entry  
                 island[(i,j)] = None
                 return (True) 
         return (False)
@@ -50,7 +50,7 @@ Constraints:
     def isAbove(self, i,j):
         for island in self.islandLst:
             if i != 0 and (i-1,j) in island:
-                island[(i,j)] = None
+                island[(i,j)] = None      # adding the item keys into the island dictionary
                 return (True)
         return (False)
     
