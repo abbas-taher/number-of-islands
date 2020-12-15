@@ -29,9 +29,13 @@ Constraints:
     grid[i][j] is '0' or '1'.
  """
 
-# The proposed Solution is quite simple and does not use recurssion.
+# The proposed Solution is quite simple and does not use recursion.
 # Simply we traverse the grid line by line and item by item to check for a given item if
-# the preceeding item or the one above belong to an island - if so then add it to that island
+# the preceeding item to the left or the item above belong to an island - if so then add it to that island
+# else create a new island for the current item.
+
+# Note: Islands are created as dictionaries with a None value; Users can use a list of tuples which
+# is slower because we need to search then in the list.
 
  class Grid(object):
     def __init__(self, mat):
@@ -39,18 +43,18 @@ Constraints:
         self.islandLst =[]     # list of dictionaries (islands)
     
     # for a given (i,j) check that preceeding item belongs to an island; if so add it to that island
-    def isBefore(self, i,j):      
+    def isLeft(self, i,j):      
         for island in self.islandLst:
-            if j != 0 and (i,j-1) in island:   # assuming grid is surrounded by water, then for j == 0 (1st entry in line) there are no before entry  
-                island[(i,j)] = None
+            if j != 0 and (i,j-1) in island:   # assuming grid is surrounded by water, then for j == 0 (1st entry in line) there are no left entries  
+                island[(i,j)] = None           # adding the item keys into the island dictionary
                 return (True) 
         return (False)
     
     # for a given (i,j) check that above item belongs to an island; if so add it to that island
     def isAbove(self, i,j):
         for island in self.islandLst:
-            if i != 0 and (i-1,j) in island:
-                island[(i,j)] = None      # adding the item keys into the island dictionary
+            if i != 0 and (i-1,j) in island: # assuming grid is surrounded by water, then for i == 0 (1st line) there are no above entries
+                island[(i,j)] = None         # adding the item keys into the island dictionary
                 return (True)
         return (False)
     
@@ -59,8 +63,8 @@ Constraints:
         for i in range (len(self.mat)):
             for j in range (len(self.mat[0])):
              if self.mat[i][j] == '1':
-                 if not self.isBefore(i,j) and not self.isAbove(i,j):
-                     self.islandLst.append({(i,j):None})                # if item does not belong to any island then create an island for it  
+                 if not self.isLeft(i,j) and not self.isAbove(i,j):
+                     self.islandLst.append({(i,j):None})                # if item does not belong to any island then create a new island for it  
                      
         return (len(self.islandLst))
     
